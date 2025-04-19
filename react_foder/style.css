@@ -1,0 +1,142 @@
+.desktop {
+  background-color: #f5f5dc;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.desktop .div {
+  background-color: var(--beige);
+  height: 1700px;
+  position: relative;
+  width: 1440px;
+}
+
+.desktop .overlap-group {
+  height: 773px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1440px;
+}
+
+.desktop .img {
+  height: 522px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1440px;
+}
+
+.desktop .text-wrapper {
+  color: #000000;
+  font-family: "Jacques Francois-Regular", Helvetica;
+  font-size: 58.7px;
+  font-weight: 400;
+  left: 255px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 585px;
+  width: 930px;
+}
+
+.desktop .mindquill {
+  height: 773px;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 957px;
+}
+
+.desktop .frame {
+  align-items: center;
+  display: inline-flex;
+  gap: 39px;
+  left: 900px;
+  position: absolute;
+  top: 41px;
+}
+
+.desktop .text-wrapper-2 {
+  color: #000000;
+  font-family: var(--menu-font-family);
+  font-size: var(--menu-font-size);
+  font-style: var(--menu-font-style);
+  font-weight: var(--menu-font-weight);
+  letter-spacing: var(--menu-letter-spacing);
+  line-height: var(--menu-line-height);
+  margin-top: -1.00px;
+  position: relative;
+  text-align: center;
+  width: fit-content;
+}
+
+.desktop .div-wrapper {
+  align-items: center;
+  background-color: var(--beige);
+  border-radius: 25px;
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
+  left: 1255px;
+  padding: 10px;
+  position: absolute;
+  top: 31px;
+}
+
+.desktop .rectangle-2 {
+  background-color: var(--pale-blue);
+  height: 140px;
+  left: 0;
+  position: absolute;
+  top: 1560px;
+  width: 1440px;
+}
+
+.desktop .rectangle-3 {
+  left: 255px !important;
+  top: 804px !important;
+}
+
+.desktop .frame-2 {
+  align-items: flex-end;
+  display: inline-flex;
+  left: 1232px;
+  position: absolute;
+  top: 850px;
+}
+
+.desktop .ellipse {
+  background-color: var(--pale-blue);
+  border-radius: 30.5px;
+  height: 61px;
+  position: relative;
+  width: 61px;
+}
+
+.desktop .text-wrapper-3 {
+  color: #000000;
+  font-family: var(--menu-font-family);
+  font-size: var(--menu-font-size);
+  font-style: var(--menu-font-style);
+  font-weight: var(--menu-font-weight);
+  height: 58px;
+  letter-spacing: var(--menu-letter-spacing);
+  line-height: var(--menu-line-height);
+  position: relative;
+  text-align: center;
+  width: 108px;
+}
+
+.desktop .frame-3 {
+  align-items: flex-end;
+  display: inline-flex;
+  left: 1232px;
+  position: absolute;
+  top: 936px;
+}
+
