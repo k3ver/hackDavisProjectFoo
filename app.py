@@ -38,18 +38,32 @@ nltk.download('punkt_tab')
 from nltk.tokenize import sent_tokenize
 kw_model = KeyBERT('all-MiniLM-L6-v2')
 
-@app.route("/process-pdf", methods=["POST"])
-def process_pdf():
-    pass
-
-def simplify_text():
+def simplify_text(text):
     pass 
 
 def highlight_text(text):
+    ratio = 0.25
+    n = math.ceil(len(text.split(" ")) * ratio)
+    keywords = kw_model.extract_keywords(text, keyphrase_ngram_range=(1, 1), stop_words='english', top_n=n)
+    keywords_text = [keyword[0] for keyword in keywords]
+    return keywords_text
+
+def generate_quiz(text):
     pass
 
-def generate_quiz():
-    pass
+
+@app.route("/process-pdf", methods=["POST"])
+def process_pdf():
+    file = request.files["pdf_file"]
+    doc = fitz.open(stream=file.read(), filetype="pdf")
+
+    text = ""
+    for page in doc:
+        text += page.get_text()
+
+    text_simplified = simplify_text(text)
+    highlighted_text = highlight_text(text_simplified)
+    quizzes = generate_quiz(text_simplified)
 
 
 if __name__ == '__main__':
