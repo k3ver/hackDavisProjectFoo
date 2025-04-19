@@ -26,14 +26,15 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-GEMINI_API_KEY = "AIzaSyDL0deo5LkDstEUevrH8SK5cwWZsgobpZg"
+OMKAR_GEMINI_API_KEY = "AIzaSyDL0deo5LkDstEUevrH8SK5cwWZsgobpZg"
+genai.configure(api_key=OMKAR_GEMINI_API_KEY)
 
-if not GEMINI_API_KEY:
+if not OMKAR_GEMINI_API_KEY:
     print("Warning: GEMINI_API_KEY not found in environment variables")
 
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
-    gemini_model = genai.GenerativeModel('gemini-pro')
+if OMKAR_GEMINI_API_KEY:
+    genai.configure(api_key=OMKAR_GEMINI_API_KEY)
+    gemini_model = genai.GenerativeModel(model_name="models/gemini-1.5-pro")
 
 """
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
@@ -111,6 +112,70 @@ def process_pdf():
     text_simplified = simplify_text(text)
     highlighted_text = highlight_text(text_simplified)
     quizzes = generate_quiz(text_simplified)
+
+
+def generate_flashcard(summary_data):
+    if not OMKAR_GEMINI_API_KEY:
+        return []
+
+    try:
+        # Extract fields from summary_data safely
+        key_points = summary_data.get("key_points", [])
+        highlight_terms = summary_data.get("highlight_terms", [])
+        summary = summary_data.get("summary", "")
+    except Exception as e:
+        print(f"Error parsing input summary data: {str(e)}")
+        return []
+
+    # Construct context and prompt
+    context = f"""
+    Summary of the text:
+    {summary}
+
+    Key points from the text:
+    {' '.join(key_points)}
+
+    Important terms:
+    {', '.join(highlight_terms)}
+    """
+
+    prompt = f"""
+    Based on this summary and key terms from a text, create 10 flashcards that would
+    help someone with ADHD remember the most important information.
+
+    For each flashcard, provide:
+    1. Front: A term, concept, or question
+    2. Back: The definition, explanation, or answer
+
+    {context}
+
+    Format your response as a JSON array with objects containing:
+    - front: term or question
+    - back: definition or answer
+    """
+
+    try:
+        response = gemini_model.generate_content(prompt)
+        text_response = response.text
+    except Exception as e:
+        print(f"Error generating flashcards: {str(e)}")
+        return []
+
+    # Attempt to extract JSON array from the response
+    try:
+        json_match = re.search(r'```json\s*(.*?)\s*```', text_response, re.DOTALL)
+        if json_match:
+            json_str = json_match.group(1)
+        else:
+            json_match = re.search(r'\[.*\]', text_response, re.DOTALL)
+            json_str = json_match.group(0) if json_match else text_response
+
+        flashcards_data = json.loads(json_str)
+        return flashcards_data
+    except Exception as e:
+        print(f"Error parsing flashcards response as JSON: {str(e)}")
+        return []
+
 
 
 if __name__ == '__main__':
