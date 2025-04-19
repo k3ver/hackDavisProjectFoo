@@ -3,7 +3,12 @@
 ### possible tech stack: 
 - react.js
     - frontend
-- OpenAI API calls
+- app.py (flask) backend
+    - Quiz generation (OpenAI API calls)
+    - Pdf processor (PyMuPDF potentially)
+    - Text simplification (hugging face model such as t5-small)
+    - Text highlighting (SpaCy for Named Entity Recognition [NER])
+
 - vercel
     - deployment
 
