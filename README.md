@@ -1,7 +1,7 @@
 # PDF text parser and simplifier program geared towrad dyslexic/ADHD
 
 ### possible tech stack: 
-- react.js
+- react.js (possibly tailwind css)
     - frontend
 - app.py (flask) backend
     - Quiz generation (OpenAI API calls)
