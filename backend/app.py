@@ -59,7 +59,7 @@ def simplify_text(text):
     }
 
     # Send the POST request
-r   esponse = requests.post(f'{url}?key={API_KEY}', headers=headers, json=data)
+response = requests.post(f'{url}?key={API_KEY}', headers=headers, json=data)
     
 
 def highlight_text(text):
@@ -89,3 +89,4 @@ def process_pdf():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
