@@ -50,7 +50,7 @@ def process_pdf():
     highlighted_text = highlight_text(text_simplified)
     quizzes = generate_quiz(text_simplified)
 
-    
+
 
 if __name__ == '__main__':
     app.run(debug=True)
