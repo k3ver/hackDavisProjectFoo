@@ -5,7 +5,8 @@ import fitz # pdf reader
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import nltk
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-import spacy
+from keybert import KeyBERT
+
 
 #from services.pdf_parser import parse_pdf
 #services.simplifier import simplify_text
@@ -21,7 +22,7 @@ tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
 model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
 nltk.download('punkt_tab')
 from nltk.tokenize import sent_tokenize
-nlp = spacy.load("en_core_web_sm")
+kw_model = KeyBERT('all-MiniLM-L6-v2')
 
 @app.route("/process-pdf", methods=["POST"])
 def process_pdf():
@@ -30,7 +31,7 @@ def process_pdf():
 def simplify_text():
     pass 
 
-def highlight_text():
+def highlight_text(text):
     pass
 
 def generate_quiz():
