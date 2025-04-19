@@ -1,3 +1,5 @@
 # PDF text parser and simplifier program geared towrad dyslexic/ADHD
 
-jiji
+#### tech stack: 
+- react.js
+- OpenAI API for calls
