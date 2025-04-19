@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import PDFUploader from './components/PDFUploader';
 import PDFViewer from './components/PDFViewer';
 import DyslexiaControls from './components/DyslexiaControls';
-import QuizGenerator from './components/Quiz/QuizGenerator';
 import { ReaderProvider } from './contexts/ReaderContext';
-import './styles/dyslexiaStyles.css';
 
 function App() {
   const [pdfFile, setPdfFile] = useState(null);
@@ -42,7 +40,6 @@ function App() {
             </div>
           ) : (
             <div>
-              <QuizGenerator pdfFile={pdfFile} />
               <button 
                 onClick={() => setShowQuiz(false)}
                 className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
