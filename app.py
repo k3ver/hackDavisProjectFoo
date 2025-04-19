@@ -11,6 +11,9 @@ import google.generativeai as genai
 import re
 import base64
 import tempfile
+import math
+from dotenv import load_dotenv
+
 
 
 #from services.pdf_parser import parse_pdf
@@ -38,8 +41,22 @@ nltk.download('punkt_tab')
 from nltk.tokenize import sent_tokenize
 kw_model = KeyBERT('all-MiniLM-L6-v2')
 
+from dotenv import load_dotenv
+
+BECKETT_API_KEY = os.getenv('GEMINI_API_KEY')
+beckett_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+
 def simplify_text(text):
-    pass 
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    data = {
+        "contents": [{
+            "parts": [{"text": f"Rewrite the following paragraph in terms readable for people with dyslexia, keeping the length similar:\n\n{original_paragraph}"}]
+        }]
+    }
+    
 
 def highlight_text(text):
     ratio = 0.25
