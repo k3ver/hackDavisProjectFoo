@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 import requests
 
 
-
 #from services.pdf_parser import parse_pdf
 #services.simplifier import simplify_text
 #services.flashcard_generator import generate_flashcards
@@ -26,7 +25,7 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-OMKAR_GEMINI_API_KEY = "AIzaSyDL0deo5LkDstEUevrH8SK5cwWZsgobpZg"
+OMKAR_GEMINI_API_KEY =os.getenv('OMKAR_KEY')
 genai.configure(api_key=OMKAR_GEMINI_API_KEY)
 
 if not OMKAR_GEMINI_API_KEY:
@@ -45,7 +44,6 @@ from nltk.tokenize import sent_tokenize
 
 kw_model = KeyBERT('all-MiniLM-L6-v2')
 
-from dotenv import load_dotenv
 
 BECKETT_API_KEY = os.getenv('GEMINI_API_KEY')
 beckett_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
