@@ -92,6 +92,7 @@ def highlight_text(text):
         result = response.json()
         important_words = result['candidates'][0]['content']['parts'][0]['text']
 
+        important_words = important_words.split(",")
         return(important_words)  # This will print the response from the Gemini API
     else:
         return(f"Error: {response.status_code}, {response.text}")
@@ -112,6 +113,16 @@ def process_pdf():
     text_simplified = simplify_text(text)
     highlighted_text = highlight_text(text_simplified)
     quizzes = generate_quiz(text_simplified)
+
+    # Create a dictionary to structure the response data
+    response_data = {
+        "simplified_text": text_simplified,
+        "highlighted_text": highlighted_text,
+        "quizzes": quizzes
+    }
+    
+    # Return the response data as a JSON response
+    return jsonify(response_data)
 
 
 def generate_flashcard(summary_data):
