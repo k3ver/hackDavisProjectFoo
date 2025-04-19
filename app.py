@@ -29,3 +29,6 @@ def simplify_text():
 
 def highlight_text():
     pass
+
+def generate_quiz():
+    pass
