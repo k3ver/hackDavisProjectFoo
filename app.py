@@ -5,6 +5,7 @@ import fitz # pdf reader
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import nltk
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import spacy
 
 #from services.pdf_parser import parse_pdf
 #services.simplifier import simplify_text
@@ -20,6 +21,7 @@ tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
 model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
 nltk.download('punkt_tab')
 from nltk.tokenize import sent_tokenize
+nlp = spacy.load("en_core_web_sm")
 
 @app.route("/process-pdf", methods=["POST"])
 def process_pdf():
