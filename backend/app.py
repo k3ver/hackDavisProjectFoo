@@ -34,17 +34,7 @@ if not OMKAR_GEMINI_API_KEY:
 if OMKAR_GEMINI_API_KEY:
     genai.configure(api_key=OMKAR_GEMINI_API_KEY)
     gemini_model = genai.GenerativeModel(model_name="models/gemini-1.5-pro")
-
-"""
-tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
-model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
-nltk.download('punkt_tab')
-from nltk.tokenize import sent_tokenize
-"""
-
-kw_model = KeyBERT('all-MiniLM-L6-v2')
-
-
+    
 BECKETT_API_KEY = os.getenv('GEMINI_API_KEY')
 beckett_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
 
@@ -95,33 +85,32 @@ def highlight_text(text):
     else:
         return(f"Error: {response.status_code}, {response.text}")
 
-def generate_quiz(text):
-    pass
-
-
-@app.route("/process-pdf", methods=["POST"])
-def process_pdf():
-    file = request.files["pdf_file"]
-    doc = fitz.open(stream=file.read(), filetype="pdf")
-
-    text = ""
-    for page in doc:
-        text += page.get_text()
-
-    text_simplified = simplify_text(text)
-    highlighted_text = highlight_text(text_simplified)
-    quizzes = generate_quiz(text_simplified)
-
-    # Create a dictionary to structure the response data
-    response_data = {
-        "simplified_text": text_simplified,
-        "highlighted_text": highlighted_text,
-        "quizzes": quizzes
+def generate_multiple_choice(text):
+    headers = {
+        'Content-Type': 'application/json'
     }
-    
-    # Return the response data as a JSON response
-    return jsonify(response_data)
+    data = {
+        "contents": [{
+            "parts": [{
+                "text": (
+                    f"Generate a multiple choice quiz based on the following text. "
+                    f"Each question should have 4 options and indicate the correct answer. "
+                    f"Return the result as a JSON list with this format:\n\n"
+                    f"[{{'question': '...', 'options': ['...', '...', '...', '...'], 'answer': '...'}}, ...]\n\n"
+                    f"Text:\n{text}"
+                )
+            }]
+        }]
+    }
 
+    response = requests.post(f'{beckett_url}?key={BECKETT_API_KEY}', headers=headers, json=data)
+
+    if response.status_code == 200:
+        result = response.json()
+        quiz_json = result['candidates'][0]['content']['parts'][0]['text']
+        return quiz_json
+    else:
+        return f"Error: {response.status_code}, {response.text}"
 
 def generate_flashcard(summary_data):
     if not OMKAR_GEMINI_API_KEY:
@@ -186,7 +175,30 @@ def generate_flashcard(summary_data):
         return []
 
 
+@app.route("/process-pdf", methods=["POST"])
+def process_pdf():
+    file = request.files["pdf_file"]
+    doc = fitz.open(stream=file.read(), filetype="pdf")
+
+    text = ""
+    for page in doc:
+        text += page.get_text()
+
+    text_simplified = simplify_text(text)
+    highlighted_text = highlight_text(text_simplified)
+    multiple_choice = generate_multiple_choice(text_simplified)
+    flashcards = generate_flashcard(text_simplified)
+
+    # Create a dictionary to structure the response data
+    response_data = {
+        "simplified_text": text_simplified,
+        "highlighted_text": highlighted_text,
+        "multiple_choice": multiple_choice,
+        "flashcards": flashcards
+    }
+    
+    # Return the response data as a JSON response
+    return jsonify(response_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
