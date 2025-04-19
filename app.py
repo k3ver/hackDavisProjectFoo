@@ -7,7 +7,6 @@ import nltk
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from keybert import KeyBERT
 
-
 #from services.pdf_parser import parse_pdf
 #services.simplifier import simplify_text
 #services.flashcard_generator import generate_flashcards
