@@ -35,11 +35,13 @@ if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
     gemini_model = genai.GenerativeModel('gemini-pro')
 
-
+"""
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
 model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-small")
 nltk.download('punkt_tab')
 from nltk.tokenize import sent_tokenize
+"""
+
 kw_model = KeyBERT('all-MiniLM-L6-v2')
 
 from dotenv import load_dotenv
@@ -54,20 +56,44 @@ def simplify_text(text):
 
     data = {
         "contents": [{
-            "parts": [{"text": f"Rewrite the following paragraph in terms readable for people with dyslexia, keeping the length similar:\n\n{original_paragraph}"}]
+            "parts": [{
+                "text": f"Extract the most important words or phrases from the paragraph below. Return them as comma-separated values with no extra spaces. Keep multi-word phrases together:\n\n{text}"
+
+            }]
         }]
     }
 
     # Send the POST request
-response = requests.post(f'{url}?key={API_KEY}', headers=headers, json=data)
-    
+    response = requests.post(f'{beckett_url}?key={BECKETT_API_KEY}', headers=headers, json=data)
+    # Check the response
+    if response.status_code == 200:
+        result = response.json()
+        simplified_paragraph = result['candidates'][0]['content']['parts'][0]['text']
+
+        return(simplified_paragraph)  # This will print the response from the Gemini API
+    else:
+        return(f"Error: {response.status_code}, {response.text}")
 
 def highlight_text(text):
-    ratio = 0.25
-    n = math.ceil(len(text.split(" ")) * ratio)
-    keywords = kw_model.extract_keywords(text, keyphrase_ngram_range=(1, 1), stop_words='english', top_n=n)
-    keywords_text = [keyword[0] for keyword in keywords]
-    return keywords_text
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    data = {
+        "contents": [{
+            "parts": [{"text": f"Find the most important words in this paragraph and return them as comma separated values, no spaces in between:\n\n{text}"}]
+        }]
+    }
+
+    # Send the POST request
+    response = requests.post(f'{beckett_url}?key={BECKETT_API_KEY}', headers=headers, json=data)
+    # Check the response
+    if response.status_code == 200:
+        result = response.json()
+        important_words = result['candidates'][0]['content']['parts'][0]['text']
+
+        return(important_words)  # This will print the response from the Gemini API
+    else:
+        return(f"Error: {response.status_code}, {response.text}")
 
 def generate_quiz(text):
     pass
