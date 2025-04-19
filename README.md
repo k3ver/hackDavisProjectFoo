@@ -10,6 +10,3 @@
     - Text highlighting (SpaCy for Named Entity Recognition [NER])
 - vercel
     - deployment
-
-
-FIXME
