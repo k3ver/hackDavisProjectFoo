@@ -13,6 +13,7 @@ import base64
 import tempfile
 import math
 from dotenv import load_dotenv
+import requests
 
 
 
@@ -56,6 +57,9 @@ def simplify_text(text):
             "parts": [{"text": f"Rewrite the following paragraph in terms readable for people with dyslexia, keeping the length similar:\n\n{original_paragraph}"}]
         }]
     }
+
+    # Send the POST request
+r   esponse = requests.post(f'{url}?key={API_KEY}', headers=headers, json=data)
     
 
 def highlight_text(text):
