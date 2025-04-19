@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
+import fitz # pdf reader
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 import nltk
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
@@ -32,3 +33,6 @@ def highlight_text():
 
 def generate_quiz():
     pass
+
+if __name__ == '__main__':
+    app.run(debug=True)
