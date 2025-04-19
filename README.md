@@ -8,7 +8,6 @@
     - Pdf processor (PyMuPDF potentially)
     - Text simplification (hugging face model such as t5-small)
     - Text highlighting (SpaCy for Named Entity Recognition [NER])
-
 - vercel
     - deployment
 
