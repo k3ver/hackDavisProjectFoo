@@ -23,7 +23,7 @@ export const Desktop = () => {
     formData.append("pdf_file", file);
   
     try {
-      const res = await fetch("http://localhost:5001/process-pdf", {
+      const res = await fetch(process.env.REACT_APP_API_URL + '/process-pdf', {
         method: "POST",
         headers: {
           'Origin': 'http://localhost:3000'
