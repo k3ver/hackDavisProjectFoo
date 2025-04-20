@@ -9,14 +9,14 @@ import {
 export const signUp = async (email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    await verifyToken(userCredential.user); // Verify token after signup
-    return userCredential; // Return userCredential if you need it
+    // Comment out or remove the token verification until you have a backend set up
+    // await verifyToken(userCredential.user);
+    return userCredential; 
   } catch (error) {
     console.error("Sign up error:", error);
-    throw error; // Handle signup errors
+    throw error;
   }
 };
-
 export const signIn = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);

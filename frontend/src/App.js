@@ -4,6 +4,12 @@ import './App.css';
 import { Desktop } from "./Desktop";
 import './NavigationToolbar.css'; // Import the new CSS file
 
+// database imports
+import { signUp } from './authService';
+import { db } from './firebase';
+import { doc, setDoc } from 'firebase/firestore';
+
+
 // About Page Component
 const AboutPage = () => {
   return (
@@ -46,7 +52,6 @@ const ProgressPage = () => {
   );
 };
 
-// Sign Up Form Component
 const SignUpPage = () => {
   const [formData, setFormData] = React.useState({
     fullName: '',
@@ -54,6 +59,8 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: ''
   });
+  
+  const [error, setError] = React.useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,16 +70,41 @@ const SignUpPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
-    alert('Account created successfully!');
+    
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    
+    try {
+      // Sign up the user
+      const userCredential = await signUp(formData.email, formData.password);
+      const user = userCredential.user;
+      
+      // Create a user document in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        name: formData.fullName,
+        email: formData.email,
+        documents_processed: 0,
+        "hours saved": 0,
+        // Add any other initial user data fields
+      });
+      
+      alert('Account created successfully!');
+      // Redirect to home or dashboard
+    } catch (error) {
+      console.error('Error during signup:', error);
+      setError(error.message);
+    }
   };
 
   return (
     <div className="page-container">
       <h1>Create Your Account</h1>
+      {error && <div className="error-message">{error}</div>}
       <form className="signup-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="fullName">Full Name</label>
