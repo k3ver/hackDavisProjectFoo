@@ -9,6 +9,10 @@ export const Desktop = () => {
   const [highlightedWords, setHighlightedText] = useState("");
   const [activeSection, setActiveSection] = useState('text'); // 'quiz' or 'text'
   const [quizData, setQuizData] = useState([]);
+  const [userAnswers, setUserAnswers] = useState({});
+  const [submitted, setSubmitted] = useState(false);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [solvedQuestions, setSolvedQuestions] = useState({});
 
   // Handle file upload and fetch summarized text from backend
   const handleFileUpload = async (e) => {
@@ -103,24 +107,94 @@ export const Desktop = () => {
 
         {activeSection === 'quiz' && quizData.length > 0 && (
           <div className="quiz-container">
-            {quizData.map((quizItem, index) => (
-              <div key={index} className="quiz-question">
-                <h3>{quizItem.question}</h3>
-                {quizItem.options.map((option, idx) => (
-                  <div key={idx}>
-                    <input
-                      type="radio"
-                      id={`question-${index}-option-${idx}`}
-                      name={`question-${index}`}
-                      value={option}
-                    />
-                    <label htmlFor={`question-${index}-option-${idx}`}>{option}</label>
-                  </div>
-                ))}
-              </div>
-            ))}
+            {(() => {
+              const quizItem = quizData[currentQuestionIndex];
+              const selectedAnswer = userAnswers[currentQuestionIndex];
+              const isSolved = solvedQuestions[currentQuestionIndex] || false;
+
+              return (
+                <div className="quiz-question">
+                  <h3>{quizItem.question}</h3>
+                  {quizItem.options.map((option, idx) => {
+                    const isCorrect = option === quizItem.answer;
+                    const isSelected = selectedAnswer === option;
+                    const shouldHighlight = isSelected;
+
+                    return (
+                      <div key={idx}>
+                        <input
+                          type="radio"
+                          id={`q-${currentQuestionIndex}-option-${idx}`}
+                          name={`q-${currentQuestionIndex}`}
+                          value={option}
+                          onChange={() => {
+                            if (isSolved) return;
+
+                            setUserAnswers({
+                              ...userAnswers,
+                              [currentQuestionIndex]: option,
+                            });
+
+                            if (option === quizItem.answer) {
+                              setSolvedQuestions({
+                                ...solvedQuestions,
+                                [currentQuestionIndex]: true,
+                              });
+                            }
+                          }}
+                          checked={isSelected}
+                          disabled={isSolved}
+                        />
+                        <label
+                          htmlFor={`q-${currentQuestionIndex}-option-${idx}`}
+                          style={{
+                            color:
+                              isSolved && isCorrect
+                                ? "green"
+                                : isSelected && !isCorrect
+                                ? "red"
+                                : "black",
+                          }}
+                        >
+                          {option}
+                        </label>
+                      </div>
+                    );
+                  })}
+
+                  {isSolved && (
+                    <div style={{ marginTop: "10px", color: "green" }}>
+                      ✅ Correct! You got it!
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
+            <div style={{ marginTop: "20px" }}>
+              <button
+                onClick={() =>
+                  setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0))
+                }
+                disabled={currentQuestionIndex === 0}
+                style={{ marginRight: "10px" }}
+              >
+                ← Previous
+              </button>
+              <button
+                onClick={() =>
+                  setCurrentQuestionIndex((prev) =>
+                    Math.min(prev + 1, quizData.length - 1)
+                  )
+                }
+                disabled={currentQuestionIndex === quizData.length - 1}
+              >
+                Next →
+              </button>
+            </div>
           </div>
         )}
+
 
         <div className="frame-2">
           {/* Ellipse button for Quiz */}
