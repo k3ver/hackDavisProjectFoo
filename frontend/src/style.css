@@ -130,88 +130,129 @@
   width: 1440px;
 }
 
+/* Enhanced styles for the upload area and toggle buttons */
+
+
 .desktop .rectangle-3 {
   background-color: var(--pale-blue);
   width: 930px;
-  height: 400px;
+  height: 400px; 
   position: absolute;
   left: 255px;
   top: 804px;
   border-radius: 20px;
-  z-index: 1;
-}
-
-.file-drop-zone {
-  background-color: var(--pale-blue);
-  width: 930px;
-  height: 200px;
-  position: absolute;
-  left: 255px;
-  top: 804px;
-  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
-  color: #333;
-  cursor: pointer;
-  z-index: 1;
-}
-.file-drop-zone:hover {
-  background-color: #b3e5ff;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  border: 2px dashed #3498db;
 }
 
-.desktop .frame-2 {
-  align-items: flex-end;
-  display: inline-flex;
-  left: 1232px;
+.desktop .rectangle-3:hover {
+  background-color: #c0e6ff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.file-upload-input {
+  opacity: 0;
   position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.desktop .rectangle-3::before {
+  content: "Click or drop a PDF file here";
+  position: relative; /* Changed from absolute */
+  font-family: "OpenDyslexic", sans-serif;
+  font-size: 35px;
+  color: #2c3e50;
+  pointer-events: none;
+  text-align: center;
+  margin-bottom: 15px; /* Add space between text and icon */
+}
+
+.desktop .rectangle-3::after {
+  content: "📄";
+  position: relative; /* Changed from absolute */
+  font-size: 48px;
+  pointer-events: none;
+}
+
+/* Improved ellipse toggle buttons */
+.toggle-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 150px;
   top: 850px;
+  gap: 20px;
+  align-items: center;
+}
+
+.toggle-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
 .desktop .ellipse {
-  background-color: var(--pale-blue);
+  background-color: var(--beige);
   border-radius: 30.5px;
   height: 61px;
-  position: relative;
-  width: 61px;
-}
-
-.desktop .ellipse {
-  background-color: var(--beige); /* Default to beige */
-  border-radius: 30.5px;
-  height: 61px;
-  position: relative;
   width: 61px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.desktop .ellipse:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .desktop .ellipse.active {
-  background-color: red; /* Change to red when active */
-}
-.desktop .text-wrapper-3 {
-  color: #000000;
-  font-family: var(--menu-font-family);
-  font-size: var(--menu-font-size);
-  font-style: var(--menu-font-style);
-  font-weight: var(--menu-font-weight);
-  height: 58px;
-  letter-spacing: var(--menu-letter-spacing);
-  line-height: var(--menu-line-height);
-  position: relative;
-  text-align: center;
-  width: 108px;
+  background-color: #3498db; /* Changed from red to a blue that matches your design */
+  border: 2px solid #2980b9;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);
 }
 
-.desktop .frame-3 {
-  align-items: flex-end;
-  display: inline-flex;
-  left: 1232px;
-  position: absolute;
-  top: 936px;
+.desktop .text-wrapper-3 {
+  color: #2c3e50;
+  font-family: "OpenDyslexic", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.toggle-option:hover .text-wrapper-3 {
+  color: #3498db;
+}
+
+.toggle-option.active .text-wrapper-3 {
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Add icons inside ellipses */
+.quiz-icon::before {
+  content: "❓";
+  font-size: 24px;
+}
+
+.text-icon::before {
+  content: "📄";
+  font-size: 24px;
 }
 
 .desktop .summarized-text-container {
