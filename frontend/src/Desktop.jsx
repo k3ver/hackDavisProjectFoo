@@ -6,6 +6,8 @@ import "./style.css";
 export const Desktop = () => {
   // State to store summarized text
   const [summarizedText, setSummarizedText] = useState("");
+  const [highlightedWords, setHighlightedText] = useState("");
+
 
   // Handle file upload and fetch summarized text from backend
   const handleFileUpload = async (e) => {
@@ -29,11 +31,28 @@ export const Desktop = () => {
       
       // Set summarized text from response
       setSummarizedText(result.simplified_text);
+      setHighlightedText(result.highlighted_text);
     } catch (err) {
       console.error("Upload failed:", err);
     }
   };
 
+  const getHighlightedText = (text, keywords) => {
+    // Escape regex chars and make a regex pattern for whole words
+    const escapedKeywords = keywords.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const regex = new RegExp(`\\b(${escapedKeywords.join('|')})\\b`, 'gi');
+  
+    const parts = text.split(regex);
+  
+    return parts.map((part, i) =>
+      keywords.some(kw => kw.toLowerCase() === part.toLowerCase()) ? (
+        <mark key={i}>{part}</mark>
+      ) : (
+        <span key={i}>{part}</span>
+      )
+    );
+  };
+  
   return (
     <div className="desktop">
       <div className="div">
@@ -56,8 +75,6 @@ export const Desktop = () => {
           </div>
         </div>
 
-        <div className="rectangle-2" />
-
         {/* Upload button only */}
         <div className="rectangle-3">
           <input
@@ -71,7 +88,7 @@ export const Desktop = () => {
         {summarizedText && (
           <div className="summarized-text-container">
             <h2>Summarized Text</h2>
-            <p>{summarizedText}</p>
+            <p className="highlighted-text">{getHighlightedText(summarizedText, highlightedWords)}</p>
           </div>
         )}
 
