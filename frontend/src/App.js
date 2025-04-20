@@ -142,8 +142,8 @@ function App() {
           <div className="nav-links">
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/about" className="nav-link">About</Link>
-            <Link to="/signup" className="nav-link">Sign Up</Link>
             <Link to="/progress" className="nav-link">Progress</Link>
+            <Link to="/signup" className="nav-link">Sign Up</Link>
           </div>
         </nav>
 
@@ -151,8 +151,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Desktop />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
             <Route path="/progress" element={<ProgressPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
           </Routes>
         </div>
       </div>
