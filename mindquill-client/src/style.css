@@ -141,6 +141,26 @@
   z-index: 1;
 }
 
+.file-drop-zone {
+  background-color: var(--pale-blue);
+  width: 930px;
+  height: 200px;
+  position: absolute;
+  left: 255px;
+  top: 804px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  z-index: 1;
+}
+.file-drop-zone:hover {
+  background-color: #b3e5ff;
+}
+
 .desktop .frame-2 {
   align-items: flex-end;
   display: inline-flex;
