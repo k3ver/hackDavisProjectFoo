@@ -44,7 +44,7 @@ export const verifyToken = async (user) => {
     const token = await user.getIdToken();
 
     // Send the token to your backend for verification
-    const response = await fetch("http://localhost:5001/verify-token", {
+    const response = await fetch("/verify-token", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${token}`,
