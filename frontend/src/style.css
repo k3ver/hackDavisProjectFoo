@@ -339,11 +339,26 @@
   border-radius: 4px;
 }
 
-.quiz-container label {
-  display: block;
-  margin: 12px 0;
+/* Updated quiz option styles */
+.quiz-question {
+  margin-bottom: 20px;
+}
+
+.quiz-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.quiz-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.quiz-option label {
   font-size: 18px;
-  padding-left: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 .quiz-navigation {
@@ -391,4 +406,21 @@
   font-family: "OpenDyslexic", sans-serif;
   font-size: 22px;
   color: #7f8c8d;
+}
+
+/* Add correct answer highlight */
+.correct-answer {
+  color: green;
+}
+
+/* Add incorrect answer highlight */
+.incorrect-answer {
+  color: red;
+}
+
+/* Success message */
+.success-message {
+  margin-top: 10px;
+  color: green;
+  font-weight: bold;
 }

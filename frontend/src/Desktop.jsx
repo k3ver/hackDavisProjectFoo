@@ -160,7 +160,7 @@ export const Desktop = () => {
                         const shouldHighlight = isSelected;
 
                         return (
-                          <div key={idx}>
+                          <div key={idx} className="quiz-option">
                             <input
                               type="radio"
                               id={`q-${currentQuestionIndex}-option-${idx}`}
@@ -186,14 +186,13 @@ export const Desktop = () => {
                             />
                             <label
                               htmlFor={`q-${currentQuestionIndex}-option-${idx}`}
-                              style={{
-                                color:
-                                  isSolved && isCorrect
-                                    ? "green"
-                                    : isSelected && !isCorrect
-                                    ? "red"
-                                    : "black",
-                              }}
+                              className={
+                                isSolved && isCorrect
+                                  ? "correct-answer"
+                                  : isSelected && !isCorrect
+                                  ? "incorrect-answer"
+                                  : ""
+                              }
                             >
                               {option}
                             </label>
@@ -202,7 +201,7 @@ export const Desktop = () => {
                       })}
 
                       {isSolved && (
-                        <div style={{ marginTop: "10px", color: "green" }}>
+                        <div className="success-message">
                           ✅ Correct! You got it!
                         </div>
                       )}
