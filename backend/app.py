@@ -20,12 +20,26 @@ ALLOWED_ORIGINS = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:3000,https
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, 
-     origins=ALLOWED_ORIGINS,
-     methods=["GET", "POST", "OPTIONS"],  # Added OPTIONS explicitly
-     allow_headers=["Content-Type", "Authorization"],
-     supports_credentials=True,
-     expose_headers=["Content-Type", "Authorization"])
+
+# Apply CORS to all routes with a simpler configuration
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Add CORS headers to all responses manually
+@app.after_request
+def add_cors_headers(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+    return response
+
+# Add explicit OPTIONS handler
+@app.route('/process-pdf', methods=['OPTIONS'])
+def options_process_pdf():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "POST,OPTIONS")
+    return response
 
 # Firebase setup from env var
 firebase_json = os.environ.get("FIREBASE_CREDENTIALS_JSON")
