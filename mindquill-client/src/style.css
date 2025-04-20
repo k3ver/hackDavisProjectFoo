@@ -1,3 +1,8 @@
+:root {
+  --beige: #f5f5dc;
+  --pale-blue: #cceeff;
+}
+
 .desktop {
   background-color: #f5f5dc;
   display: flex;
@@ -98,8 +103,14 @@
 }
 
 .desktop .rectangle-3 {
-  left: 255px !important;
-  top: 804px !important;
+  background-color: var(--pale-blue);
+  width: 930px;
+  height: 400px;
+  position: absolute;
+  left: 255px;
+  top: 804px;
+  border-radius: 20px;
+  z-index: 1;
 }
 
 .desktop .frame-2 {
