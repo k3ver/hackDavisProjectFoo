@@ -199,18 +199,16 @@
   top: 936px;
 }
 
-.summarized-text-container {
-  margin-top: 30px;
+.desktop .summarized-text-container {
+  position: absolute;
+  top: 1230px; /* adjust as needed */
+  left: 255px;
+  width: 930px;
+  background-color: var(--pale-blue);
+  border-radius: 20px;
   padding: 20px;
-  background-color: var(--beige);
-  border-radius: 10px;
-  width: 90%; /* Adjust width if needed */
-  margin-left: auto;
-  margin-right: auto;
-  min-height: 300px; /* Ensure there's some space */
-  max-height: none; /* Remove the max-height limit */
-  overflow-y: auto; /* Scrollable if the content exceeds the page */
-  font-size: 18px;
+  font-family: "OpenDyslexic", sans-serif;
+  z-index: 2;
 }
 
 .summarized-text-container h2 {

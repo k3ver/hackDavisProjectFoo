@@ -16,14 +16,11 @@ from dotenv import load_dotenv
 import requests
 
 
-#from services.pdf_parser import parse_pdf
-#services.simplifier import simplify_text
-#services.flashcard_generator import generate_flashcards
-
-
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST"], 
+     allow_headers=["Content-Type", "Authorization"], 
+     supports_credentials=True)
 
 OMKAR_GEMINI_API_KEY =os.getenv('OMKAR_KEY')
 genai.configure(api_key=OMKAR_GEMINI_API_KEY)
@@ -46,8 +43,7 @@ def simplify_text(text):
     data = {
         "contents": [{
             "parts": [{
-                "text": f"Extract the most important words or phrases from the paragraph below. Return them as comma-separated values with no extra spaces. Keep multi-word phrases together:\n\n{text}"
-
+                "text": f"Rewrite the following paragraph in terms readable for people with dyslexia, keeping the length similar:\n\n{text}"
             }]
         }]
     }
@@ -188,18 +184,17 @@ def process_pdf():
     text_simplified = simplify_text(text)
     highlighted_text = highlight_text(text_simplified)
     multiple_choice = generate_multiple_choice(text_simplified)
-    flashcards = generate_flashcard(text_simplified)
+    #flashcards = generate_flashcard(text_simplified)
 
     # Create a dictionary to structure the response data
     response_data = {
         "simplified_text": text_simplified,
         "highlighted_text": highlighted_text,
-        "multiple_choice": multiple_choice,
-        "flashcards": flashcards
+        "multiple_choice": multiple_choice
     }
     
     # Return the response data as a JSON response
     return jsonify(response_data)
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5001, debug=True)

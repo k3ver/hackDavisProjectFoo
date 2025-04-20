@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { Rectangle } from "./Rectangle";
 import mindquill1 from "./images/mindquill-1.png";
 import rectangle1 from "./images/rectangle-1.svg";
 import "./style.css";
@@ -17,8 +16,11 @@ export const Desktop = () => {
     formData.append("pdf_file", file);
   
     try {
-      const res = await fetch("http://localhost:5000/process-pdf", {
+      const res = await fetch("http://localhost:5001/process-pdf", {
         method: "POST",
+        headers: {
+          'Origin': 'http://localhost:3000'
+        },
         body: formData,
       });
   
@@ -39,18 +41,13 @@ export const Desktop = () => {
           <img className="img" alt="Rectangle" src={rectangle1} />
 
           <p className="text-wrapper">
-            Drag or drop pdf file below to begin your learning!
+            Upload a PDF file to begin your learning!
           </p>
 
           <img className="mindquill" alt="Mindquill" src={mindquill1} />
 
-          <p className="text-wrapper">
-            Drag or drop pdf file below to begin your learning!
-          </p>
-
           <div className="frame">
             <div className="text-wrapper-2">About</div>
-
             <div className="text-wrapper-2">Progress</div>
           </div>
 
@@ -61,34 +58,34 @@ export const Desktop = () => {
 
         <div className="rectangle-2" />
 
-        <label className="rectangle-3 file-drop-zone">
+        {/* Upload button only */}
+        <div className="rectangle-3">
           <input
             type="file"
             accept="application/pdf"
             onChange={handleFileUpload}
-            style={{ display: "none" }}
+            className="file-upload-input"
           />
-          <span>Click or drop PDF here</span>
-        </label>
-
-        <div className="summarized-text-container">
-          <h2>Summarized Text:</h2>
-          <p>{summarizedText}</p>
         </div>
+
+        {summarizedText && (
+          <div className="summarized-text-container">
+            <h2>Summarized Text</h2>
+            <p>{summarizedText}</p>
+          </div>
+        )}
+
 
         <div className="frame-2">
           <div className="ellipse" />
-
           <div className="text-wrapper-3">Quiz</div>
         </div>
 
         <div className="frame-3">
           <div className="ellipse" />
-
           <div className="text-wrapper-3">Text</div>
         </div>
       </div>
     </div>
   );
 };
-
