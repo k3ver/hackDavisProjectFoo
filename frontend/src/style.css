@@ -41,7 +41,7 @@
 
 .desktop .div {
   background-color: var(--beige);
-  height: 1700px;
+  height: 1800px;
   position: relative;
   width: 1440px;
 }
@@ -225,7 +225,7 @@
   font-family: "OpenDyslexic", sans-serif;
   z-index: 2;
 
-  max-height: 300px; /* Adjust as needed to set a maximum height */
+  max-height: 500px; /* Adjust as needed to set a maximum height */
   overflow-y: auto; /* Enables vertical scrolling */
 }
 
@@ -244,3 +244,32 @@
   padding: 2px 4px;
   border-radius: 4px;
 }
+<<<<<<< HEAD
+=======
+
+.desktop .quiz-container {
+  position: absolute;
+  top: 1230px; /* Adjust to align with your text container */
+  left: 255px;
+  width: 930px;
+  background-color: var(--pale-blue); /* Same background color */
+  border-radius: 20px;
+  padding: 20px;
+  font-family: "OpenDyslexic", sans-serif;
+  z-index: 2;
+
+  max-height: 500px; /* Same as the summarized text container */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.quiz-container h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.quiz-container label {
+  display: block;
+  margin: 8px 0;
+  font-size: 18px;
+}
+>>>>>>> a6b00b700a4d23722e58eb5b905041d21e366901
