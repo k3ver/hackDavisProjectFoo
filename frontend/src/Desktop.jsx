@@ -77,15 +77,6 @@ export const Desktop = () => {
           </p>
 
           <img className="mindquill" alt="Mindquill" src={mindquill1} />
-
-          <div className="frame">
-            <div className="text-wrapper-2">About</div>
-            <div className="text-wrapper-2">Progress</div>
-          </div>
-
-          <div className="div-wrapper">
-            <div className="text-wrapper-2">Sign Up</div>
-          </div>
         </div>
 
         {/* Upload button only */}
