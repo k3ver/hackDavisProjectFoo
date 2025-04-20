@@ -23,7 +23,7 @@ import requests
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:3000"])
 
 OMKAR_GEMINI_API_KEY =os.getenv('OMKAR_KEY')
 genai.configure(api_key=OMKAR_GEMINI_API_KEY)
