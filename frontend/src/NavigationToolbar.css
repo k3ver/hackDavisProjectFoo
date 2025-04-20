@@ -149,6 +149,9 @@
 .App {
   background-color: var(--beige);
   min-height: 100vh;
+  /* Added to ensure the footer stays at the bottom */
+  display: flex;
+  flex-direction: column;
 }
 
 /* To ensure body and html have the background color as well */
@@ -156,4 +159,81 @@ body, html {
   background-color: var(--beige);
   margin: 0;
   padding: 0;
+}
+
+/* Team Footer styles - COMPACT VERSION WITHOUT AVATARS */
+.team-footer {
+  background-color: #2c3e50;
+  color: white;
+  padding: 0.6rem 0;
+  margin-top: auto;
+}
+
+.team-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.team-title {
+  margin: 0;
+  margin-right: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.team-members {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.member-name {
+  font-weight: bold;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.linkedin-button {
+  background-color: #0077b5;
+  color: white;
+  border: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.linkedin-button:hover {
+  background-color: #005e8b;
+}
+
+/* Make the footer responsive */
+@media (max-width: 768px) {
+  .team-container {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+  
+  .team-title {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+  
+  .team-members {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
 }
