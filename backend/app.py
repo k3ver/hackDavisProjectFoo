@@ -186,6 +186,8 @@ def process_pdf():
     multiple_choice = generate_multiple_choice(text_simplified)
     #flashcards = generate_flashcard(text_simplified)
 
+    print("Generated quiz data:", multiple_choice)  # Log the quiz data to console
+
     # Create a dictionary to structure the response data
     response_data = {
         "simplified_text": text_simplified,

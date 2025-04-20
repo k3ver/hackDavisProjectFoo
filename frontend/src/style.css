@@ -177,6 +177,21 @@
   width: 61px;
 }
 
+.desktop .ellipse {
+  background-color: var(--beige); /* Default to beige */
+  border-radius: 30.5px;
+  height: 61px;
+  position: relative;
+  width: 61px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.desktop .ellipse.active {
+  background-color: red; /* Change to red when active */
+}
 .desktop .text-wrapper-3 {
   color: #000000;
   font-family: var(--menu-font-family);
@@ -228,4 +243,30 @@
   color: black;
   padding: 2px 4px;
   border-radius: 4px;
+}
+
+.desktop .quiz-container {
+  position: absolute;
+  top: 1230px; /* Adjust to align with your text container */
+  left: 255px;
+  width: 930px;
+  background-color: var(--pale-blue); /* Same background color */
+  border-radius: 20px;
+  padding: 20px;
+  font-family: "OpenDyslexic", sans-serif;
+  z-index: 2;
+
+  max-height: 300px; /* Same as the summarized text container */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.quiz-container h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.quiz-container label {
+  display: block;
+  margin: 8px 0;
+  font-size: 18px;
 }
