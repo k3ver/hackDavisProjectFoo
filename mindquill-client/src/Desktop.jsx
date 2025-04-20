@@ -5,6 +5,26 @@ import rectangle1 from "./images/rectangle-1.svg";
 import "./style.css";
 
 export const Desktop = () => {
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+  
+    const formData = new FormData();
+    formData.append("pdf", file);
+  
+    try {
+      const res = await fetch("http://localhost:3000/upload", {
+        method: "POST",
+        body: formData,
+      });
+  
+      const result = await res.json();
+      console.log("Server response:", result);
+      // Do something with the result (e.g., show quiz, summary, etc.)
+    } catch (err) {
+      console.error("Upload failed:", err);
+    }
+  };
   return (
     <div className="desktop">
       <div className="div">
@@ -34,7 +54,15 @@ export const Desktop = () => {
 
         <div className="rectangle-2" />
 
-        <div className="rectangle-3" />
+        <label className="rectangle-3 file-drop-zone">
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handleFileUpload}
+            style={{ display: "none" }}
+          />
+          <span>Click or drop PDF here</span>
+        </label>
         <div className="frame-2">
           <div className="ellipse" />
 
