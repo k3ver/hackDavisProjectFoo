@@ -1,8 +1,14 @@
 /* NavigationToolbar.css */
+:root {
+  --beige: #f5f5dc;
+  --pale-blue: #cceeff;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: var(--beige);
 }
 
 .navigation-toolbar {
@@ -55,6 +61,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: var(--beige);
+  font-family: "OpenDyslexic", sans-serif;
 }
 
 /* Sign-up form styles */
@@ -62,7 +70,7 @@
   max-width: 500px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--pale-blue);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -109,7 +117,7 @@
 
 .stat-card {
   flex: 1;
-  background-color: #f8f9fa;
+  background-color: var(--pale-blue);
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -123,7 +131,7 @@
 }
 
 .recent-activity {
-  background-color: #f8f9fa;
+  background-color: var(--pale-blue);
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -135,4 +143,17 @@
 
 .recent-activity li {
   margin-bottom: 0.75rem;
+}
+
+/* Make sure the App has the beige background */
+.App {
+  background-color: var(--beige);
+  min-height: 100vh;
+}
+
+/* To ensure body and html have the background color as well */
+body, html {
+  background-color: var(--beige);
+  margin: 0;
+  padding: 0;
 }

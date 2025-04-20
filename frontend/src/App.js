@@ -145,12 +145,14 @@ function App() {
           </div>
         </nav>
 
-        <Routes>
-          <Route path="/" element={<Desktop />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/progress" element={<ProgressPage />} />
-        </Routes>
+        <div className="content-area">
+          <Routes>
+            <Route path="/" element={<Desktop />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/progress" element={<ProgressPage />} />
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   );
