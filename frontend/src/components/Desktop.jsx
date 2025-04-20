@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import mindquill1 from "../images/mindquill-1.png";
 import rectangle1 from "../images/rectangle-1.svg";
-import "./style.css";
+import "../style.css";
 
 export const Desktop = () => {
   // State to store summarized text
