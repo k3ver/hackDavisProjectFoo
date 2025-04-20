@@ -41,7 +41,7 @@
 
 .desktop .div {
   background-color: var(--beige);
-  height: 1700px;
+  height: 1800px;
   position: relative;
   width: 1440px;
 }
@@ -225,7 +225,7 @@
   font-family: "OpenDyslexic", sans-serif;
   z-index: 2;
 
-  max-height: 300px; /* Adjust as needed to set a maximum height */
+  max-height: 500px; /* Adjust as needed to set a maximum height */
   overflow-y: auto; /* Enables vertical scrolling */
 }
 
@@ -256,7 +256,7 @@
   font-family: "OpenDyslexic", sans-serif;
   z-index: 2;
 
-  max-height: 300px; /* Same as the summarized text container */
+  max-height: 500px; /* Same as the summarized text container */
   overflow-y: auto; /* Enables vertical scrolling */
 }
 
