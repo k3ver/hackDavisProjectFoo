@@ -186,23 +186,33 @@ export const Desktop = () => {
           </div>
         )}
 
-
-        <div className="frame-2">
-          {/* Ellipse button for Quiz */}
-          <div
-            className={`ellipse ${activeSection === 'quiz' ? 'active' : ''}`}
+        {/* Updated frame-2 and frame-3 sections for the toggle buttons */}
+        <div className="toggle-container">
+          <div 
+            className={`toggle-option ${activeSection === 'quiz' ? 'active' : ''}`}
             onClick={() => handleToggle('quiz')}
-          />
-          <div className="text-wrapper-3">Quiz</div>
+          >
+            <div className={`ellipse quiz-icon ${activeSection === 'quiz' ? 'active' : ''}`} />
+            <div className="text-wrapper-3">Quiz</div>
+          </div>
+
+          <div 
+            className={`toggle-option ${activeSection === 'text' ? 'active' : ''}`}
+            onClick={() => handleToggle('text')}
+          >
+            <div className={`ellipse text-icon ${activeSection === 'text' ? 'active' : ''}`} />
+            <div className="text-wrapper-3">Text</div>
+          </div>
         </div>
 
-        <div className="frame-3">
-          {/* Ellipse button for Text */}
-          <div
-            className={`ellipse ${activeSection === 'text' ? 'active' : ''}`}
-            onClick={() => handleToggle('text')}
+        {/* Updated file upload area with visual indicator */}
+        <div className="rectangle-3">
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handleFileUpload}
+            className="file-upload-input"
           />
-          <div className="text-wrapper-3">Text</div>
         </div>
       </div>
     </div>
