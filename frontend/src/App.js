@@ -29,8 +29,8 @@ const ProgressPage = ({ userProgress }) => (
         <p className="stat-number">{userProgress.quiz_accuracy || '0%'}</p>
       </div>
       <div className="stat-card">
-        <h3>Hours Saved</h3>
-        <p className="stat-number">{userProgress.hours_saved || 0}</p>
+        <h3>Minutes Saved</h3>
+        <p className="stat-number">{userProgress.minutes_saved || 0}</p>
       </div>
     </div>
     <div className="recent-activity">
@@ -97,7 +97,9 @@ const SignUpPage = () => {
         email: formData.email,
         documents_processed: 0,
         quiz_accuracy: '0%',
-        hours_saved: 0,
+        total_correct: 0,
+        total_answered: 0,
+        minutes_saved: 0,
         recent_activity: []
       });
       alert('Account created successfully!');

@@ -5,7 +5,7 @@ import mindquill1 from "./images/mindquill-1.png";
 import rectangle1 from "./images/rectangle-1.svg";
 import "./style.css";
 import { db } from "./firebase";
-import { doc, updateDoc, arrayUnion, increment } from "firebase/firestore";
+import { doc, updateDoc, arrayUnion, increment, getDoc } from "firebase/firestore";
 
 export const Desktop = ({ user, setUserProgress }) => {
   const [summarizedText, setSummarizedText] = useState("");
@@ -44,13 +44,22 @@ export const Desktop = ({ user, setUserProgress }) => {
       setSolvedQuestions({});
       setSubmitted(false);
 
-      // Update user progress in Firestore
       if (user) {
         const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.exists() ? userSnap.data() : {};
+
         await updateDoc(userRef, {
           documents_processed: increment(1),
-          hours_saved: increment(0.2),
-          recent_activity: arrayUnion(`Summarized \"${file.name}\"`),
+          minutes_saved: increment(12),
+          recent_activity: arrayUnion(`Summarized \"${file.name}\"`)
+        });
+
+        setUserProgress({
+          ...userData,
+          documents_processed: (userData.documents_processed || 0) + 1,
+          minutes_saved: (userData.minutes_saved || 0) + 12,
+          recent_activity: [...(userData.recent_activity || []), `Summarized \"${file.name}\"`]
         });
       }
     } catch (err) {
@@ -80,14 +89,34 @@ export const Desktop = ({ user, setUserProgress }) => {
 
   const handleAnswer = async (option, quizItem) => {
     const isCorrect = option === quizItem.answer;
-    setUserAnswers({ ...userAnswers, [currentQuestionIndex]: option });
+    const updatedAnswers = { ...userAnswers, [currentQuestionIndex]: option };
+    setUserAnswers(updatedAnswers);
     if (isCorrect) {
-      setSolvedQuestions({ ...solvedQuestions, [currentQuestionIndex]: true });
+      const updatedSolved = { ...solvedQuestions, [currentQuestionIndex]: true };
+      setSolvedQuestions(updatedSolved);
 
       if (user) {
         const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        const data = userSnap.data();
+
+        const totalCorrect = (data.total_correct || 0) + 1;
+        const totalAnswered = (data.total_answered || 0) + 1;
+        const quizAccuracy = ((totalCorrect / totalAnswered) * 100).toFixed(0) + "%";
+
         await updateDoc(userRef, {
+          total_correct: totalCorrect,
+          total_answered: totalAnswered,
+          quiz_accuracy: quizAccuracy,
           recent_activity: arrayUnion(`Completed quiz: \"${quizItem.question.slice(0, 30)}...\"`)
+        });
+
+        setUserProgress({
+          ...data,
+          total_correct: totalCorrect,
+          total_answered: totalAnswered,
+          quiz_accuracy: quizAccuracy,
+          recent_activity: [...(data.recent_activity || []), `Completed quiz: \"${quizItem.question.slice(0, 30)}...\"`]
         });
       }
     }
