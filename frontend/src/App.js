@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import { Desktop } from "./Desktop";
-import './NavigationToolbar.css'; // Import the new CSS file
+import './NavigationToolbar.css'; // Import the CSS file
 
 // database imports
 import { signUp } from './authService';
@@ -163,6 +163,41 @@ const SignUpPage = () => {
   );
 };
 
+// Team Footer Component
+// Team Footer Component (Compact Version)
+// Team Footer Component (No Avatars)
+const TeamFooter = () => {
+  return (
+    <footer className="team-footer">
+      <div className="team-container">
+        <h2 className="team-title">Our Team:</h2>
+        <div className="team-members">
+          <div className="team-member">
+            <h3 className="member-name">Beckett Hayes</h3>
+            <a href="https://www.linkedin.com/in/beckett-hayes-3a162a25b/" target="_blank" rel="noopener noreferrer" className="linkedin-button">
+              LinkedIn
+            </a>
+          </div>
+          
+          <div className="team-member">
+            <h3 className="member-name">Omkar Kulkarni</h3>
+            <a href="https://www.linkedin.com/in/omkar-kulkarni-b7b742276/" target="_blank" rel="noopener noreferrer" className="linkedin-button">
+              LinkedIn
+            </a>
+          </div>
+          
+          <div className="team-member">
+            <h3 className="member-name">Kevin Angeles</h3>
+            <a href="https://www.linkedin.com/in/angelesmkevin/" target="_blank" rel="noopener noreferrer" className="linkedin-button">
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
 function App() {
   return (
     <BrowserRouter>
@@ -187,6 +222,9 @@ function App() {
             <Route path="/signup" element={<SignUpPage />} />
           </Routes>
         </div>
+        
+        {/* Add the Team Footer component here */}
+        <TeamFooter />
       </div>
     </BrowserRouter>
   );
