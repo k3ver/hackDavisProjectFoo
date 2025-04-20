@@ -229,3 +229,135 @@
   padding: 2px 4px;
   border-radius: 4px;
 }
+
+/* Add these styles to your existing style.css file */
+
+/* Navigation toolbar styles */
+.navigation-toolbar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit; /* Inherit the font from your existing styles */
+  font-size: inherit;
+  padding: 8px 16px;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 4px;
+}
+
+.nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-button.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Page content styles */
+.about-content,
+.progress-content,
+.signup-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress page styles */
+.progress-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 16px;
+  flex: 1;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.recent-documents {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recent-documents th,
+.recent-documents td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.recent-documents th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Sign up page styles */
+.signup-content {
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.signup-form {
+  margin-top: 24px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-group input.error {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 4px;
+  display: block;
+}
+
+.signup-button {
+  background-color: #3498db; /* Match this to your app's primary color */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.signup-button:hover {
+  background-color: #2980b9;
+}

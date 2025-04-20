@@ -1,13 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
 import React from 'react';
-
-import { Desktop } from "./Desktop"; // make sure the path is correct
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Desktop } from "./components/Desktop";
+import { About } from "./components/About";
+import { Progress } from "./components/Progress";
+import { SignUp } from "./components/SignUp";
 
 function App() {
   return (
     <div className="App">
-      <Desktop />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Desktop />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/progress" element={<Progress />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
