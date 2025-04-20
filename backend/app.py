@@ -69,7 +69,7 @@ def simplify_text(text):
 
 
 
-ef highlight_text(text):
+def highlight_text(text):
     headers = {'Content-Type': 'application/json'}
     data = {
         "contents": [{
