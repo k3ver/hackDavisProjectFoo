@@ -67,6 +67,8 @@ def simplify_text(text):
         return response.json()['candidates'][0]['content']['parts'][0]['text']
     return f"Error: {response.status_code}, {response.text}"
 
+
+
 def highlight_text(text):
     headers = {'Content-Type': 'application/json'}
     data = {

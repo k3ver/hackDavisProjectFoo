@@ -29,9 +29,9 @@ export const Desktop = () => {
     try {
       const res = await fetch(process.env.REACT_APP_API_URL + '/process-pdf', {
         method: "POST",
-        headers: {
-          'Origin': 'http://localhost:3000'
-        },
+        // Remove the Origin header - browsers set this automatically
+        // Add mode: 'cors' to explicitly use CORS
+        mode: 'cors',
         body: formData,
       });
   
