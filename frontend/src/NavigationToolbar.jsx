@@ -1,8 +1,8 @@
+// NavigationToolbar.jsx
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import './App.css';
-import { Desktop } from "./Desktop";
-import './NavigationToolbar.css'; // Import the new CSS file
+import { Link, Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Desktop } from './Desktop';
+import './NavigationToolbar.css';
 
 // About Page Component
 const AboutPage = () => {
@@ -129,10 +129,11 @@ const SignUpPage = () => {
   );
 };
 
-function App() {
+// Main App Component with Navigation
+const App = () => {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="app-container">
         <nav className="navigation-toolbar">
           <div className="logo-container">
             <Link to="/" className="logo-link">MindQuill</Link>
@@ -145,15 +146,17 @@ function App() {
           </div>
         </nav>
 
-        <Routes>
-          <Route path="/" element={<Desktop />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/progress" element={<ProgressPage />} />
-        </Routes>
+        <div className="content-container">
+          <Routes>
+            <Route path="/" element={<Desktop />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/progress" element={<ProgressPage />} />
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
