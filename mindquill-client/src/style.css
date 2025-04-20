@@ -3,6 +3,34 @@
   --pale-blue: #cceeff;
 }
 
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./fonts/OpenDyslexic/OpenDyslexic-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./fonts/OpenDyslexic/OpenDyslexic-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./fonts/OpenDyslexic/OpenDyslexic-Italic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('./fonts/OpenDyslexic/OpenDyslexic-Bold-Italic.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
+}
+
 .desktop {
   background-color: #f5f5dc;
   display: flex;
@@ -150,4 +178,5 @@
   position: absolute;
   top: 936px;
 }
+
 
