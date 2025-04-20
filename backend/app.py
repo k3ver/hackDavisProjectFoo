@@ -17,7 +17,7 @@ import requests
 
 # authentication import
 import firebase_admin
-from firebase_admin import credentials, auth
+from firebase_admin import credentials, auth, initialize_app 
 
 
 # Initialize Flask app
@@ -27,9 +27,10 @@ CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST"],
      supports_credentials=True)
 
 #service account key file
-cred = credentials.Certificate("mindquill-ucdavis-firebase-adminsdk-fbsvc-8970870fb3.json")
-firebase_admin.initialize_app(cred)
-
+firebase_json = os.environ.get("FIREBASE_CREDENTIALS_JSON")
+cred_dict = json.loads(firebase_json)
+cred = credentials.Certificate(cred_dict)
+initialize_app(cred)
 
 OMKAR_GEMINI_API_KEY =os.getenv('OMKAR_KEY')
 genai.configure(api_key=OMKAR_GEMINI_API_KEY)
