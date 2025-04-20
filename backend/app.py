@@ -34,7 +34,7 @@ if not OMKAR_GEMINI_API_KEY:
 if OMKAR_GEMINI_API_KEY:
     genai.configure(api_key=OMKAR_GEMINI_API_KEY)
     gemini_model = genai.GenerativeModel(model_name="models/gemini-1.5-pro")
-    
+
 BECKETT_API_KEY = os.getenv('GEMINI_API_KEY')
 beckett_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
 
@@ -177,6 +177,7 @@ def generate_flashcard(summary_data):
 
 @app.route("/process-pdf", methods=["POST"])
 def process_pdf():
+    print("Received PDF upload request...")  
     file = request.files["pdf_file"]
     doc = fitz.open(stream=file.read(), filetype="pdf")
 
@@ -201,4 +202,4 @@ def process_pdf():
     return jsonify(response_data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000, debug=True)

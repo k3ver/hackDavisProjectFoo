@@ -1,30 +1,37 @@
-import React from "react";
+import React, { useState } from 'react';
 // import { Rectangle } from "./Rectangle";
 import mindquill1 from "./images/mindquill-1.png";
 import rectangle1 from "./images/rectangle-1.svg";
 import "./style.css";
 
 export const Desktop = () => {
+  // State to store summarized text
+  const [summarizedText, setSummarizedText] = useState("");
+
+  // Handle file upload and fetch summarized text from backend
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
   
     const formData = new FormData();
-    formData.append("pdf", file);
+    formData.append("pdf_file", file);
   
     try {
-      const res = await fetch("http://localhost:3000/upload", {
+      const res = await fetch("http://localhost:5000/process-pdf", {
         method: "POST",
         body: formData,
       });
   
       const result = await res.json();
       console.log("Server response:", result);
-      // Do something with the result (e.g., show quiz, summary, etc.)
+      
+      // Set summarized text from response
+      setSummarizedText(result.simplified_text);
     } catch (err) {
       console.error("Upload failed:", err);
     }
   };
+
   return (
     <div className="desktop">
       <div className="div">
@@ -63,6 +70,12 @@ export const Desktop = () => {
           />
           <span>Click or drop PDF here</span>
         </label>
+
+        <div className="summarized-text-container">
+          <h2>Summarized Text:</h2>
+          <p>{summarizedText}</p>
+        </div>
+
         <div className="frame-2">
           <div className="ellipse" />
 
