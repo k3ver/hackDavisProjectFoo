@@ -126,23 +126,24 @@
   height: 140px;
   left: 0;
   position: absolute;
-  top: 1560px;
-  width: 1440px;
+  top: 1660px;
+  width: 100%;
 }
 
-/* Enhanced styles for the upload area and toggle buttons */
-
-
+/* Centered PDF upload area */
 .desktop .rectangle-3 {
   background-color: var(--pale-blue);
-  width: 930px;
-  height: 400px; 
+  width: 70%;
+  max-width: 930px;
+  height: 200px; /* Reduced height */
   position: absolute;
-  left: 255px;
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
   top: 804px;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
@@ -166,46 +167,97 @@
 
 .desktop .rectangle-3::before {
   content: "Click or drop a PDF file here";
-  position: relative; /* Changed from absolute */
   font-family: "OpenDyslexic", sans-serif;
-  font-size: 35px;
+  font-size: 28px;
   color: #2c3e50;
   pointer-events: none;
   text-align: center;
-  margin-bottom: 15px; /* Add space between text and icon */
 }
 
 .desktop .rectangle-3::after {
   content: "📄";
-  position: relative; /* Changed from absolute */
   font-size: 48px;
   pointer-events: none;
+  margin-top: 10px;
 }
 
-/* Improved ellipse toggle buttons */
-.toggle-container {
+.uploaded-file-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(204, 238, 255, 0.95);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  font-family: "OpenDyslexic", sans-serif;
+}
+
+.uploaded-file-info p {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.reset-upload-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  font-family: "OpenDyslexic", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-upload-btn:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+/* Content container for summary/quiz and toggle buttons */
+.content-container {
   position: absolute;
-  right: 150px;
-  top: 850px;
+  top: 1050px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Toggle container positioned at the top of content container */
+.toggle-container {
+  display: flex;
+  flex-direction: row;
   gap: 20px;
   align-items: center;
+  justify-content: flex-start; /* Align to the left */
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 .toggle-option {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Change to row to place text beside icon */
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  width: 120px; /* Fixed width */
 }
 
 .desktop .ellipse {
   background-color: var(--beige);
   border-radius: 30.5px;
-  height: 61px;
-  width: 61px;
+  height: 60px;
+  width: 60px;
+  min-width: 60px; /* Ensure minimum width */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -221,7 +273,7 @@
 }
 
 .desktop .ellipse.active {
-  background-color: #3498db; /* Changed from red to a blue that matches your design */
+  background-color: #3498db;
   border: 2px solid #2980b9;
   box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);
 }
@@ -244,7 +296,7 @@
   font-weight: bold;
 }
 
-/* Add icons inside ellipses */
+/* Icons inside ellipses */
 .quiz-icon::before {
   content: "❓";
   font-size: 24px;
@@ -255,28 +307,29 @@
   font-size: 24px;
 }
 
-.desktop .summarized-text-container {
-  position: absolute;
-  top: 1230px; /* adjust as needed */
-  left: 255px;
-  width: 930px;
+/* Content display area */
+.content-display {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.desktop .summarized-text-container,
+.desktop .quiz-container,
+.desktop .no-content-message {
   background-color: var(--pale-blue);
   border-radius: 20px;
   padding: 20px;
   font-family: "OpenDyslexic", sans-serif;
-  z-index: 2;
-
-  max-height: 500px; /* Adjust as needed to set a maximum height */
-  overflow-y: auto; /* Enables vertical scrolling */
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.summarized-text-container h2 {
+.summarized-text-container h2,
+.quiz-container h3 {
   font-size: 24px;
   margin-bottom: 15px;
-}
-
-.summarized-text-container p {
-  white-space: pre-wrap; /* Ensure line breaks from the backend are respected */
 }
 
 .highlighted-text mark {
@@ -286,28 +339,56 @@
   border-radius: 4px;
 }
 
-.desktop .quiz-container {
-  position: absolute;
-  top: 1230px; /* Adjust to align with your text container */
-  left: 255px;
-  width: 930px;
-  background-color: var(--pale-blue); /* Same background color */
-  border-radius: 20px;
-  padding: 20px;
-  font-family: "OpenDyslexic", sans-serif;
-  z-index: 2;
-
-  max-height: 500px; /* Same as the summarized text container */
-  overflow-y: auto; /* Enables vertical scrolling */
-}
-
-.quiz-container h3 {
-  font-size: 24px;
-  margin-bottom: 15px;
-}
-
 .quiz-container label {
   display: block;
-  margin: 8px 0;
+  margin: 12px 0;
   font-size: 18px;
+  padding-left: 10px;
+}
+
+.quiz-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #b3d9ff;
+}
+
+.quiz-nav-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  font-family: "OpenDyslexic", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.quiz-nav-button:hover:not(:disabled) {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+.quiz-nav-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.question-counter {
+  font-family: "OpenDyslexic", sans-serif;
+  font-size: 16px;
+  color: #7f8c8d;
+}
+
+.no-content-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-family: "OpenDyslexic", sans-serif;
+  font-size: 22px;
+  color: #7f8c8d;
 }
