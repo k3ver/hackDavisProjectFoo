@@ -15,12 +15,21 @@ import math
 from dotenv import load_dotenv
 import requests
 
+# authentication import
+import firebase_admin
+from firebase_admin import credentials, auth
+
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST"], 
      allow_headers=["Content-Type", "Authorization"], 
      supports_credentials=True)
+
+#service account key file
+cred = credentials.Certificate("mindquill-ucdavis-firebase-adminsdk-fbsvc-8970870fb3.json")
+firebase_admin.initialize_app(cred)
+
 
 OMKAR_GEMINI_API_KEY =os.getenv('OMKAR_KEY')
 genai.configure(api_key=OMKAR_GEMINI_API_KEY)
@@ -195,6 +204,20 @@ def process_pdf():
     
     # Return the response data as a JSON response
     return jsonify(response_data)
+
+
+@app.route("/verify-token", methods=["POST"])
+def verify_token():
+    try:
+        token = request.headers.get('Authorization').split("Bearer ")[1]
+        decoded_token = auth.verify_id_token(token)
+        uid = decoded_token['uid']
+        return jsonify({"status": "success", "uid": uid})
+    except Exception as e:
+        print(f"Token verification error: {e}")
+        return jsonify({"status": "error", "message": "Invalid token"}), 401
+
+
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
