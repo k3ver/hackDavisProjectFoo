@@ -16,14 +16,16 @@ from firebase_admin import credentials, auth, initialize_app
 load_dotenv()
 
 # environment variables or whatever claude said
-ALLOWED_ORIGINS = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+ALLOWED_ORIGINS = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:3000,https://mindquill.vercel.app/').split(',')
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "https://mindquill-d926gkkvq-k3vers-projects.vercel.app/"], 
-     methods=["GET", "POST"],
+CORS(app, 
+     origins=ALLOWED_ORIGINS,
+     methods=["GET", "POST", "OPTIONS"],  # Added OPTIONS explicitly
      allow_headers=["Content-Type", "Authorization"],
-     supports_credentials=True)
+     supports_credentials=True,
+     expose_headers=["Content-Type", "Authorization"])
 
 # Firebase setup from env var
 firebase_json = os.environ.get("FIREBASE_CREDENTIALS_JSON")
