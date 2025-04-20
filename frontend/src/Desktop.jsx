@@ -38,11 +38,17 @@ export const Desktop = ({ user, setUserProgress }) => {
 
       setSummarizedText(result.simplified_text);
       setHighlightedText(result.highlighted_text);
-      setQuizData(JSON.parse(cleanString));
-      setCurrentQuestionIndex(0);
-      setUserAnswers({});
-      setSolvedQuestions({});
-      setSubmitted(false);
+      const parsedQuiz = JSON.parse(cleanString);
+      if (parsedQuiz && Array.isArray(parsedQuiz)) {
+        setQuizData(parsedQuiz);
+        setCurrentQuestionIndex(0);
+        setUserAnswers({});
+        setSolvedQuestions({});
+        setSubmitted(false);
+      } else {
+        console.error("Invalid quiz data format:", parsedQuiz);
+      }
+
 
       if (user) {
         const userRef = doc(db, "users", user.uid);
