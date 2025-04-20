@@ -9,22 +9,21 @@ import {
 export const signUp = async (email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    // Comment out or remove the token verification until you have a backend set up
-    // await verifyToken(userCredential.user);
     return userCredential; 
   } catch (error) {
     console.error("Sign up error:", error);
     throw error;
   }
 };
+
 export const signIn = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    await verifyToken(userCredential.user); // Verify token after sign-in
-    return userCredential; // Return userCredential if you need it
+    // Removed token verification to avoid failing without backend
+    return userCredential;
   } catch (error) {
     console.error("Sign-in error:", error);
-    throw error; // Handle sign-in errors
+    throw error;
   }
 };
 
@@ -33,17 +32,14 @@ export const logout = () => signOut(auth);
 export const observeUser = (callback) =>
   onAuthStateChanged(auth, callback);
 
-// New function to verify the Firebase token with the backend
+// Optional: Keep for later if you implement backend verification
 export const verifyToken = async (user) => {
   try {
     if (!user) {
       throw new Error("No user is signed in.");
     }
 
-    // Retrieve the user's token
     const token = await user.getIdToken();
-
-    // Send the token to your backend for verification
     const response = await fetch("/verify-token", {
       method: "POST",
       headers: {
@@ -56,9 +52,9 @@ export const verifyToken = async (user) => {
       throw new Error("Token verification failed.");
     }
     console.log("Token verified successfully:", result);
-    return result; // You can handle the result here or return it for use in the component
+    return result;
   } catch (error) {
     console.error("Token verification error:", error);
-    throw error; // Rethrow the error to handle it in the component
+    throw error;
   }
 };
