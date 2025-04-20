@@ -1,55 +1,44 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
-import fitz # pdf reader
-from transformers import T5Tokenizer, T5ForConditionalGeneration
-import nltk
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from keybert import KeyBERT
 import json
-import google.generativeai as genai
-import re
 import base64
 import tempfile
-import math
-from dotenv import load_dotenv
+import re
 import requests
+from dotenv import load_dotenv
 
-# authentication import
+# Firebase Admin SDK
 import firebase_admin
-from firebase_admin import credentials, auth, initialize_app 
+from firebase_admin import credentials, auth, initialize_app
 
+# Load environment variables
+load_dotenv()
+
+# environment variables or whatever claude said
+ALLOWED_ORIGINS = os.environ.get('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST"], 
-     allow_headers=["Content-Type", "Authorization"], 
+CORS(app, origins=["http://localhost:3000", "https://mindquill-d926gkkvq-k3vers-projects.vercel.app/"], 
+     methods=["GET", "POST"],
+     allow_headers=["Content-Type", "Authorization"],
      supports_credentials=True)
 
-#service account key file
+# Firebase setup from env var
 firebase_json = os.environ.get("FIREBASE_CREDENTIALS_JSON")
 cred_dict = json.loads(firebase_json)
 cred = credentials.Certificate(cred_dict)
 initialize_app(cred)
 
-OMKAR_GEMINI_API_KEY =os.getenv('OMKAR_KEY')
-genai.configure(api_key=OMKAR_GEMINI_API_KEY)
-
-if not OMKAR_GEMINI_API_KEY:
-    print("Warning: GEMINI_API_KEY not found in environment variables")
-
-if OMKAR_GEMINI_API_KEY:
-    genai.configure(api_key=OMKAR_GEMINI_API_KEY)
-    gemini_model = genai.GenerativeModel(model_name="models/gemini-1.5-pro")
-
+# Gemini API Keys
+OMKAR_GEMINI_API_KEY = os.getenv('OMKAR_KEY')
 BECKETT_API_KEY = os.getenv('GEMINI_API_KEY')
 beckett_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
 
+# Utils
 def simplify_text(text):
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
+    headers = {'Content-Type': 'application/json'}
     data = {
         "contents": [{
             "parts": [{
@@ -57,44 +46,28 @@ def simplify_text(text):
             }]
         }]
     }
-
-    # Send the POST request
     response = requests.post(f'{beckett_url}?key={BECKETT_API_KEY}', headers=headers, json=data)
-    # Check the response
     if response.status_code == 200:
-        result = response.json()
-        simplified_paragraph = result['candidates'][0]['content']['parts'][0]['text']
-
-        return(simplified_paragraph)  # This will print the response from the Gemini API
-    else:
-        return(f"Error: {response.status_code}, {response.text}")
+        return response.json()['candidates'][0]['content']['parts'][0]['text']
+    return f"Error: {response.status_code}, {response.text}"
 
 def highlight_text(text):
-    headers = {
-        'Content-Type': 'application/json'
-    }
+    headers = {'Content-Type': 'application/json'}
     data = {
         "contents": [{
-            "parts": [{"text": f"Find the most important words in this paragraph and return them as comma separated values, no spaces in between:\n\n{text}"}]
+            "parts": [{
+                "text": f"Find the most important words in this paragraph and return them as comma separated values, no spaces in between:\n\n{text}"
+            }]
         }]
     }
-
-    # Send the POST request
     response = requests.post(f'{beckett_url}?key={BECKETT_API_KEY}', headers=headers, json=data)
-    # Check the response
     if response.status_code == 200:
-        result = response.json()
-        important_words = result['candidates'][0]['content']['parts'][0]['text']
-
-        important_words = important_words.split(",")
-        return(important_words)  # This will print the response from the Gemini API
-    else:
-        return(f"Error: {response.status_code}, {response.text}")
+        text = response.json()['candidates'][0]['content']['parts'][0]['text']
+        return text.split(",")
+    return f"Error: {response.status_code}, {response.text}"
 
 def generate_multiple_choice(text):
-    headers = {
-        'Content-Type': 'application/json'
-    }
+    headers = {'Content-Type': 'application/json'}
     data = {
         "contents": [{
             "parts": [{
@@ -108,65 +81,53 @@ def generate_multiple_choice(text):
             }]
         }]
     }
-
     response = requests.post(f'{beckett_url}?key={BECKETT_API_KEY}', headers=headers, json=data)
-
     if response.status_code == 200:
-        result = response.json()
-        quiz_json = result['candidates'][0]['content']['parts'][0]['text']
-        return quiz_json
-    else:
-        return f"Error: {response.status_code}, {response.text}"
+        return response.json()['candidates'][0]['content']['parts'][0]['text']
+    return f"Error: {response.status_code}, {response.text}"
 
 def generate_flashcard(summary_data):
     if not OMKAR_GEMINI_API_KEY:
         return []
 
     try:
-        # Extract fields from summary_data safely
+        from google.generativeai import GenerativeModel, configure
+        configure(api_key=OMKAR_GEMINI_API_KEY)
+        gemini_model = GenerativeModel(model_name="models/gemini-1.5-pro")
+
         key_points = summary_data.get("key_points", [])
         highlight_terms = summary_data.get("highlight_terms", [])
         summary = summary_data.get("summary", "")
-    except Exception as e:
-        print(f"Error parsing input summary data: {str(e)}")
-        return []
 
-    # Construct context and prompt
-    context = f"""
-    Summary of the text:
-    {summary}
+        context = f"""
+        Summary of the text:
+        {summary}
 
-    Key points from the text:
-    {' '.join(key_points)}
+        Key points from the text:
+        {' '.join(key_points)}
 
-    Important terms:
-    {', '.join(highlight_terms)}
-    """
+        Important terms:
+        {', '.join(highlight_terms)}
+        """
 
-    prompt = f"""
-    Based on this summary and key terms from a text, create 10 flashcards that would
-    help someone with ADHD remember the most important information.
+        prompt = f"""
+        Based on this summary and key terms from a text, create 10 flashcards that would
+        help someone with ADHD remember the most important information.
 
-    For each flashcard, provide:
-    1. Front: A term, concept, or question
-    2. Back: The definition, explanation, or answer
+        For each flashcard, provide:
+        1. Front: A term, concept, or question
+        2. Back: The definition, explanation, or answer
 
-    {context}
+        {context}
 
-    Format your response as a JSON array with objects containing:
-    - front: term or question
-    - back: definition or answer
-    """
+        Format your response as a JSON array with objects containing:
+        - front: term or question
+        - back: definition or answer
+        """
 
-    try:
         response = gemini_model.generate_content(prompt)
         text_response = response.text
-    except Exception as e:
-        print(f"Error generating flashcards: {str(e)}")
-        return []
 
-    # Attempt to extract JSON array from the response
-    try:
         json_match = re.search(r'```json\s*(.*?)\s*```', text_response, re.DOTALL)
         if json_match:
             json_str = json_match.group(1)
@@ -174,18 +135,21 @@ def generate_flashcard(summary_data):
             json_match = re.search(r'\[.*\]', text_response, re.DOTALL)
             json_str = json_match.group(0) if json_match else text_response
 
-        flashcards_data = json.loads(json_str)
-        return flashcards_data
+        return json.loads(json_str)
     except Exception as e:
-        print(f"Error parsing flashcards response as JSON: {str(e)}")
+        print(f"Error generating or parsing flashcards: {str(e)}")
         return []
 
-
+# Routes
 @app.route("/process-pdf", methods=["POST"])
 def process_pdf():
-    print("Received PDF upload request...")  
+    import fitz  # Lazy import
+    print("Received PDF upload request...")
     file = request.files["pdf_file"]
-    doc = fitz.open(stream=file.read(), filetype="pdf")
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+        file.save(tmp.name)
+        doc = fitz.open(tmp.name)
 
     text = ""
     for page in doc:
@@ -194,20 +158,14 @@ def process_pdf():
     text_simplified = simplify_text(text)
     highlighted_text = highlight_text(text_simplified)
     multiple_choice = generate_multiple_choice(text_simplified)
-    #flashcards = generate_flashcard(text_simplified)
+    # flashcards = generate_flashcard(text_simplified)
 
-    print("Generated quiz data:", multiple_choice)  # Log the quiz data to console
-
-    # Create a dictionary to structure the response data
     response_data = {
         "simplified_text": text_simplified,
         "highlighted_text": highlighted_text,
         "multiple_choice": multiple_choice
     }
-    
-    # Return the response data as a JSON response
     return jsonify(response_data)
-
 
 @app.route("/verify-token", methods=["POST"])
 def verify_token():
@@ -220,7 +178,7 @@ def verify_token():
         print(f"Token verification error: {e}")
         return jsonify({"status": "error", "message": "Invalid token"}), 401
 
-
-
 if __name__ == '__main__':
-    app.run(port=5001, debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Default to 5000 if PORT not set
+    app.run(host='0.0.0.0', port=port)
+
