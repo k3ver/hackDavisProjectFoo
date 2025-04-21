@@ -49,7 +49,6 @@ export const Desktop = ({ user, setUserProgress }) => {
         console.error("Invalid quiz data format:", parsedQuiz);
       }
 
-
       if (user) {
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
@@ -97,7 +96,7 @@ export const Desktop = ({ user, setUserProgress }) => {
     const isCorrect = option === quizItem.answer;
     const updatedAnswers = { ...userAnswers, [currentQuestionIndex]: option };
     setUserAnswers(updatedAnswers);
-    if (solvedQuestions[currentQuestionIndex]) return; // Already answered, skip
+    if (solvedQuestions[currentQuestionIndex]) return;
 
     const updatedSolved = { ...solvedQuestions, [currentQuestionIndex]: true };
     setSolvedQuestions(updatedSolved);
@@ -124,7 +123,6 @@ export const Desktop = ({ user, setUserProgress }) => {
       quiz_accuracy: quizAccuracy,
       recent_activity: [...(data.recent_activity || []), `Completed quiz: \"${quizItem.question.slice(0, 30)}...\"`]
     });
-
   };
 
   return (
@@ -192,19 +190,26 @@ export const Desktop = ({ user, setUserProgress }) => {
                             />
                             <label
                               htmlFor={`q-${currentQuestionIndex}-option-${idx}`}
-                              className={isSolved && isCorrect ? "correct-answer" : isSelected && !isCorrect ? "incorrect-answer" : ""}
+                              className={
+                                isSolved
+                                  ? isCorrect
+                                    ? "correct-answer"
+                                    : isSelected
+                                    ? "incorrect-answer"
+                                    : ""
+                                  : ""
+                              }
                             >
                               {option}
                             </label>
                           </div>
                         );
                       })}
-                      {isSolved && userAnswers[currentQuestionIndex] === quizItem.answer ? (
+                      {isSolved && selectedAnswer === quizItem.answer ? (
                         <div className="success-message">✅ Correct! You got it!</div>
                       ) : isSolved ? (
                         <div className="error-message">❌ Incorrect. The correct answer is highlighted.</div>
                       ) : null}
-
                     </div>
                   );
                 })()}
