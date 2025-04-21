@@ -199,7 +199,12 @@ export const Desktop = ({ user, setUserProgress }) => {
                           </div>
                         );
                       })}
-                      {isSolved && <div className="success-message">✅ Correct! You got it!</div>}
+                      {isSolved && userAnswers[currentQuestionIndex] === quizItem.answer ? (
+                        <div className="success-message">✅ Correct! You got it!</div>
+                      ) : isSolved ? (
+                        <div className="error-message">❌ Incorrect. The correct answer is highlighted.</div>
+                      ) : null}
+
                     </div>
                   );
                 })()}
