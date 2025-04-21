@@ -97,35 +97,34 @@ export const Desktop = ({ user, setUserProgress }) => {
     const isCorrect = option === quizItem.answer;
     const updatedAnswers = { ...userAnswers, [currentQuestionIndex]: option };
     setUserAnswers(updatedAnswers);
-    if (isCorrect) {
-      const updatedSolved = { ...solvedQuestions, [currentQuestionIndex]: true };
-      setSolvedQuestions(updatedSolved);
+    if (solvedQuestions[currentQuestionIndex]) return; // Already answered, skip
 
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        const data = userSnap.data();
+    const updatedSolved = { ...solvedQuestions, [currentQuestionIndex]: true };
+    setSolvedQuestions(updatedSolved);
 
-        const totalCorrect = (data.total_correct || 0) + 1;
-        const totalAnswered = (data.total_answered || 0) + 1;
-        const quizAccuracy = ((totalCorrect / totalAnswered) * 100).toFixed(0) + "%";
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+    const data = userSnap.data();
 
-        await updateDoc(userRef, {
-          total_correct: totalCorrect,
-          total_answered: totalAnswered,
-          quiz_accuracy: quizAccuracy,
-          recent_activity: arrayUnion(`Completed quiz: \"${quizItem.question.slice(0, 30)}...\"`)
-        });
+    const totalCorrect = (data.total_correct || 0) + (isCorrect ? 1 : 0);
+    const totalAnswered = (data.total_answered || 0) + 1;
+    const quizAccuracy = ((totalCorrect / totalAnswered) * 100).toFixed(0) + "%";
 
-        setUserProgress({
-          ...data,
-          total_correct: totalCorrect,
-          total_answered: totalAnswered,
-          quiz_accuracy: quizAccuracy,
-          recent_activity: [...(data.recent_activity || []), `Completed quiz: \"${quizItem.question.slice(0, 30)}...\"`]
-        });
-      }
-    }
+    await updateDoc(userRef, {
+      total_correct: totalCorrect,
+      total_answered: totalAnswered,
+      quiz_accuracy: quizAccuracy,
+      recent_activity: arrayUnion(`Completed quiz: \"${quizItem.question.slice(0, 30)}...\"`)
+    });
+
+    setUserProgress({
+      ...data,
+      total_correct: totalCorrect,
+      total_answered: totalAnswered,
+      quiz_accuracy: quizAccuracy,
+      recent_activity: [...(data.recent_activity || []), `Completed quiz: \"${quizItem.question.slice(0, 30)}...\"`]
+    });
+
   };
 
   return (
